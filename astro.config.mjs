@@ -7,7 +7,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://blackhole.dev',
+  site: 'https://rickjerrity.github.io',
+  base: '/blackhole',
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
