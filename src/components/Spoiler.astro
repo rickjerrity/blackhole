@@ -1,0 +1,32 @@
+---
+const { label = 'Spoiler' } = Astro.props;
+---
+
+<span class="spoiler" onclick="this.classList.toggle('revealed')">
+  <span class="label">{label}</span>
+  <span class="content"><slot /></span>
+</span>
+
+<style>
+  .spoiler {
+    background: #696565;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0 4px;
+  }
+  .label {
+    position: absolute;
+    color: white;
+  }
+  .spoiler .content {
+    filter: blur(4px);
+    transition: filter 0.3s;
+  }
+  .spoiler.revealed .content {
+    filter: blur(0);
+    color: white;
+  }
+  .spoiler.revealed .label {
+    display: none;
+  }
+</style>

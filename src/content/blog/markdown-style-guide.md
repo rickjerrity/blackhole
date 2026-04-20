@@ -7,6 +7,12 @@ heroImage: '../../assets/blog-placeholder-1.jpg'
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
 
+*Italicized text*
+
+**Bold text**
+
+~~Strike-through text~~
+
 ## Headings
 
 The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
@@ -184,6 +190,38 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 - Dairy
   - Milk
   - Cheese
+
+### Nested Ordered list
+
+#### Syntax
+
+```markdown
+1. Fruit
+   1. Apple
+   2. Orange
+   3. Banana
+      1. Plantain
+      2. Michel
+      3. Chiquita
+   4. Avocado
+2. Dairy
+   1. Milk
+   2. Cheese
+```
+
+#### Output
+
+1. Fruit
+   1. Apple
+   2. Orange
+   3. Banana
+      1. Plantain
+      2. Michel
+      3. Chiquita
+   4. Avocado
+2. Dairy
+   1. Milk
+   2. Cheese
 
 ## Other Elements — abbr, sub, sup, kbd, mark
 
