@@ -1,0 +1,96 @@
+---
+title: 'Modern Cinephile''s Movie Player'
+description: 'Never let a good movie get in the way of your doomscrolling...'
+pubDate: '2026-04-07'
+heroImage: '../../assets/cine-facing-forward.png'
+---
+import Spoiler from '../../components/Spoiler.astro';
+
+> Can we get a big one [set piece] in the first five minutes? We want people to stay tuned in
+> — <cite>Matt Damon[^1]</cite>
+
+Are you tired of being distracted by some exciting and mentally stimulating film when you're just trying to doomscroll all your problems away? Then look no further, I present to you the video player for the modern cinephile!
+
+![Demo video of the modern cinephile movie player](/cine-demo.gif)
+
+This modern all-in-one video playing machine actively tracks the gaze of your eyes and the overall direction of your face, playing only when no one is looking, and pausing the instant someone engages with the screen. Finally, you can throw on those boring, "classic" movies without having to worry about actually being distracted from your phone or laptop for longer than a few seconds. 👍
+
+* Skip to [the code](https://github.com/rickjerrity/modern-cinephile/tree/main)
+* Skip to the [Technical Details](#technical-details)
+
+## Your attention, please
+
+Overly explanatory movies and tv shows are fast becoming the new norm. Scroll through the catalog on most streaming platforms these days and you'll find no shortage of what appears to be low-grade "slop" movies and shows, seemingly designed from the beginning to be nothing more than background noise. Netflix has even been quoted as going so far to ask their screenwriters to have characters "announce what they're doing so that viewers who have this program on in the background can follow along."[^2]
+
+While Netflix is arguably the worst offender in this category, I even noticed this new trend in the highly acclaimed and award winning show Severance on Apple TV+. The show layers the irony and satire on thick and, at times, will then still continue to bash you on the nose with the message they're trying to send. With Severance specifically, it often felt like the producers kept "dumbing down" the content in the show. It's getting hard to tell these days how much of this over simplification is geared towards ensuring that the average viewer is able to keep up with the concepts and themes being represented in the show, and how much of it just because they know the average viewer will drift in and out. <Spoiler>If you're looking for a specific example, even the intro in the first season is guilty of this in my opinion. The way there are two bodies on the bed at the end, then they merge together</Spoiler>
+
+I'm not sure there's any concrete evidence yet of a correlation between the rise of smart phones and social media and what appears to be a steady decline in the average users attention spans[^3] over the years, but, regardless, here we are. Streaming platforms are no doubt exacerbating this issue due to the very nature of their business model, which is a monthly subscription fee not based on the amount of the content consumed, like ticket sales in theaters, but rather the amount and quality of content available. The more content they have, the more likely you are to find something to watch, and the more likely you are to stay subscribed. Creating quality content is expensive and difficult, but cranking out mediocre content that appeals to the lowest common denominator is now easier than ever.
+
+## Technical Details
+
+At a high-level, the project is simple to understand both conceptually and programmatically. We start an instance of VLC running a video playlist on loop, a camera is running constantly streaming video, we capture a still image from the video feed, pipe that image into a library (`mediapipe`) which uses classic machine learning models to detect a face and its landmarks (features), and finally we use the output from that to determine if someone is "watching" the screen and pause the video if so.
+
+To my pleasant surprise when starting this project, [mediapipe](https://mediapipe.org/) has abstracted and simplified much of this process already.
+
+> MediaPipe is an open-source framework by Google that enables developers to create real-time, cross-platform machine learning solutions for live video, audio, and streaming media
+
+MediaPipe provides interfaces already for "face landmarker" detection, including <abbr title="for our usecase, blendshapes function as a scale (0-1.0) of how much a face is 'looking left' or 'looking up', etc.">blendshapes</abbr>, which we can use to determine 3 things (in this order):
+
+1. Is a face detected in the image? (we get a valid result from our FaceLandmarker instance)
+2. Are the eyes staring at the screen? (analyze the blendshapes from MediaPipe, compare these values to a threshold to determine if a user is staring straight or anywhere else)
+3. If the eyes are staring elsewhere, we fallback to detecting facial landmarks
+   1. Take these facial landmarks
+
+We use a Raspberry Pi 5 (RPi) as the underlying work-horse powering all the components and logic. The official charger recommended for use with the RPi (a 27W PD Power Supply 5.1V 5A) works beautifully to power the RPi itself, the monitor (via USB-C), and the camera module, allowing this device to essentially act as an all-in-one computer.
+
+### Setup
+
+To get up and running quick, create a `videos` directory in the root of this project and drop some `.mp4` or `.mkv` files in there.
+
+This project is intended to run on a Raspberry Pi (specifically Raspberry Pi 5) using a Pi Camera Module first and foremost.
+
+Raspberry Pi Specs:
+* Hardware - Raspberry Pi 5, 8 GB RAM
+* Storage - 32GB microSD card
+* Camera - Raspberry Pi Camera Module 3, Wide-Angle Lens
+* Operating System - Raspberry Pi OS (Legacy, 64-bit) (Bookworm)
+  * This distro and version seems to have the best package support for mediapipe and related picamera2 dependencies from my limited testing.
+* Kernel - version 6.12
+
+Clone the repo: https://github.com/rickjerrity/modern-cinephile/tree/main 
+
+First, update packages on the Raspberry Pi:
+
+`sudo apt update && sudo apt upgrade -y`
+
+Next, install the necessary libraries to use `picamera2`:
+
+`sudo apt install libc6-dev libcap-dev`
+
+Install the `uv` Python package/project manager ([uv installation](https://docs.astral.sh/uv/getting-started/installation/)):
+
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source $HOME/.cargo/env
+```
+
+Configure your uv `venv` to access system packages as well, so you can access the `libcamera` module:
+
+`uv venv --system-site-packages`
+
+Install the dependencies and run the script:
+
+```
+uv pip install -r pyproject.toml
+uv run main.py
+```
+
+## References
+
+* https://deadline.com/2026/01/matt-damon-audiences-low-attention-spans-netflix-rule-1236686082/
+* https://www.nplusonemag.com/issue-49/essays/casual-viewing/#:~:text=have%20this%20character%20announce%20what%20they%E2%80%99re%20doing%20so%20that%20viewers%20who%20have%20this%20program%20on%20in%20the%20background%20can%20follow%20along.
+
+
+[^1]: [Matt Damon, Joe Rogan Experience #2440](https://youtu.be/AVEZBy1uAk8?si=2DPmxAqiZJZz7VJL&t=687)
+[^2]: [Casual Viewing, Will Tavlin, n+1 magazine issue 49](https://www.nplusonemag.com/issue-49/essays/casual-viewing/#:~:text=have%20this%20character%20announce%20what%20they%E2%80%99re%20doing%20so%20that%20viewers%20who%20have%20this%20program%20on%20in%20the%20background%20can%20follow%20along.)
+[^3]: [Speaking of Psychology: Why our attention spans are shrinking, with Gloria Mark, PhD](https://www.apa.org/news/podcasts/speaking-of-psychology/attention-spans)
