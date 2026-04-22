@@ -19,7 +19,6 @@ const posts = (await getCollection('blog')).sort(
     <BaseHead title={SITE_DESCRIPTION} description={SITE_DESCRIPTION} />
     <style>
       main {
-        width: 960px;
         margin: auto;
         padding: 3em 1em;
       }
@@ -91,8 +90,10 @@ const posts = (await getCollection('blog')).sort(
   </head>
   <body>
     <Header />
-    <main>
-      <h2 class="pb-8 flex justify-center">{SITE_DESCRIPTION}</h2>
+    <main class="container max-w-4xl">
+      <h2 class="pb-8 flex justify-center text-center">{SITE_DESCRIPTION}</h2>
+
+      <h3 class="flex justify-center">Posts</h3>
       <section>
         <ul>
           {
