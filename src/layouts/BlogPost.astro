@@ -10,7 +10,15 @@ import { SITE_TITLE } from '../constants';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  imgWidth,
+  imgHeight,
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -63,7 +71,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         <div class="hero-image">
           {
             heroImage && (
-              <Image width={1020} height={510} src={heroImage} alt="" />
+              <Image
+                width={imgWidth ?? imgHeight ?? 1020}
+                height={imgHeight ?? imgWidth ?? 510}
+                src={heroImage}
+                alt=""
+              />
             )
           }
         </div>

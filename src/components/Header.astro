@@ -1,13 +1,14 @@
 ---
-import { SITE_TITLE } from '../constants';
 import HeaderLink from './HeaderLink.astro';
+import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="bg-gray-700 shadow-xl text-gray-300">
+<header class="sticky top-0 z-50 bg-gray-700 drop-shadow-2xl text-gray-300">
   <nav class="flex items-center justify-center">
-    <div>
+    <div class="flex items-center">
       <HeaderLink href="/">⚫</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
+      <ThemeToggle />
     </div>
   </nav>
 </header>

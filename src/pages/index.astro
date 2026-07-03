@@ -42,9 +42,6 @@ const posts = (await getCollection('blog')).sort(
         margin-bottom: 1rem;
         text-align: center;
       }
-      ul li:first-child img {
-        width: 100%;
-      }
       ul li:first-child .title {
         font-size: 2.369rem;
       }
@@ -93,26 +90,35 @@ const posts = (await getCollection('blog')).sort(
     <main class="container max-w-4xl">
       <h2 class="pb-8 flex justify-center text-center">{SITE_DESCRIPTION}</h2>
 
-      <h3 class="flex justify-center">Posts</h3>
       <section>
         <ul>
           {
-            posts.map((post) => (
+            posts.map((post, i) => (
               <li>
                 <a href={`/EH/${post.id}/`}>
                   {post.data.heroImage && (
-                    <Image
-                      width={720}
-                      height={360}
-                      src={post.data.heroImage}
-                      alt=""
-                    />
+                    <div class="flex justify-center items-center">
+                      <Image
+                        class={`${!post.data.imgWidth && i === 0 ? 'w-full' : !post.data.imgWidth ? 'md:w-3/4 w-full' : `w-[${post.data.imgWidth}px]!`}`}
+                        width={post.data.imgWidth ?? post.data.imgHeight ?? 720}
+                        height={
+                          post.data.imgHeight ?? post.data.imgWidth ?? 360
+                        }
+                        src={post.data.heroImage}
+                        alt=""
+                      />
+                    </div>
                   )}
-                  <h4 class="title">{post.data.title}</h4>
-                  <p class="date">
+                  <div class="flex justify-center items-center">
+                    <h4 class="title">{post.data.title}</h4>
+                  </div>
+                  <p class="date flex justify-center items-center">
                     <FormattedDate date={post.data.pubDate} />
                   </p>
                 </a>
+                <p class="flex justify-center items-center text-center">
+                  {post.data.description}
+                </p>
               </li>
             ))
           }
