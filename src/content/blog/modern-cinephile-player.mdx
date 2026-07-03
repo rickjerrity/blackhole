@@ -33,7 +33,7 @@ As of the latest writing of this post, Netflix has additionally launched their o
 
 At a high-level, the project is simple to understand both conceptually and programmatically. We start an instance of VLC running a video playlist on loop, a camera is running constantly streaming video, we capture a still image from the video feed, pipe that image into a library (`mediapipe`) which uses classic machine learning models to detect a face and its landmarks (features), and finally we use the output from that to determine if someone is "watching" the screen and pause the video if so.
 
-To my pleasant surprise when starting this project, [mediapipe](https://mediapipe.org/) has abstracted and simplified much of this process already.
+To my pleasant surprise when starting this project, [mediapipe](https://developers.google.com/edge/mediapipe/solutions/guide) has abstracted and simplified much of this process already.
 
 > MediaPipe is an open-source framework by Google that enables developers to create real-time, cross-platform machine learning solutions for live video, audio, and streaming media
 
@@ -97,6 +97,12 @@ Install the dependencies and run the script:
 uv pip install -r pyproject.toml
 uv run main.py
 ```
+<br />
+
+That's all folks ✌️
+
+---
+<br />
 
 [^1]: [Matt Damon, Joe Rogan Experience #2440](https://youtu.be/AVEZBy1uAk8?si=2DPmxAqiZJZz7VJL&t=687)
 [^2]: [Casual Viewing, Will Tavlin, n+1 magazine issue 49](https://www.nplusonemag.com/issue-49/essays/casual-viewing/#:~:text=have%20this%20character%20announce%20what%20they%E2%80%99re%20doing%20so%20that%20viewers%20who%20have%20this%20program%20on%20in%20the%20background%20can%20follow%20along.)
