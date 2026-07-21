@@ -22,7 +22,7 @@ Recently, I started needing to be able to share some of these research documents
 
 We've all been seeing and hearing more about the rise of bespoke, customized software recently. Why settle for terminals, IDEs, frameworks, libraries, or any other piece of software that might have rough edges or that doesn't fit your workflow quite the way you'd like? Frontier models have become great at diving deep into existing codebases and tweaking things or cobbling together entirely new things from existing packages and concepts. Emdy is nothing revolutionary, but it's exactly what *I* was looking for in a workflow, so I built it with the help of Claude Code.
 
-![Gen AI is transforming custom software development](/src/assets/genai-transforming-software.png)
+![Gen AI is transforming custom software development](../../assets/genai-transforming-software.png)
 
 ## Coding with Claude
 
